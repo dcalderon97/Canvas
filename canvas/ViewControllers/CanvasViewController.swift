@@ -56,6 +56,10 @@ class CanvasViewController: UIViewController {
             }
         }
     }
+    @objc func didTapTwice(_ sender: UITapGestureRecognizer){
+        var imageView = sender.view as! UIImageView
+        imageView.removeFromSuperview()
+    }
     @IBAction func didPanFace(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: view)
 
@@ -69,6 +73,10 @@ class CanvasViewController: UIViewController {
             let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(newlyCreatedFacePan(_:)))
             newlyCreatedFace.isUserInteractionEnabled = true
             newlyCreatedFace.addGestureRecognizer(panGestureRecognizer)
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapTwice(_:)))
+            tapGestureRecognizer.numberOfTapsRequired = 2
+            newlyCreatedFace.addGestureRecognizer(tapGestureRecognizer)
+            
         } else if sender.state == .changed {
             newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOriginalCenter.x + translation.x, y: newlyCreatedFaceOriginalCenter.y + translation.y)
         } else if sender.state == .ended {
